@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="AdvancedMaterial.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CloudsCG.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CloudSystem.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Integrator.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Ocean.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="OceanCG.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="OceanFFT.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGL.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Spectrum.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowWin.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AdvancedMaterial.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="App.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CloudsCG.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CloudSystem.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Integrator.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Ocean.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="OceanCG.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="OceanFFT.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Shadow.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Spectrum.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Spectrum.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowWin.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{faedeeef-b969-4dae-a02b-eec3ddc52f57}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+  </ItemGroup>
+</Project>
