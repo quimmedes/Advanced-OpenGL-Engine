@@ -1,129 +1,129 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="AdvancedMaterial.cpp">
+    <ClCompile Include="Engine\AdvancedMaterial.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="App.cpp">
+    <ClCompile Include="Engine\App.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
+    <ClCompile Include="Engine\Camera.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="CloudsCG.cpp">
+    <ClCompile Include="Engine\CloudsCG.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="CloudSystem.cpp">
+    <ClCompile Include="Engine\CloudSystem.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Integrator.cpp">
+    <ClCompile Include="Engine\Integrator.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Light.cpp">
+    <ClCompile Include="Engine\Light.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Engine\main.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
+    <ClCompile Include="Engine\Material.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
+    <ClCompile Include="Engine\Mesh.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Ocean.cpp">
+    <ClCompile Include="Engine\Ocean.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="OceanCG.cpp">
+    <ClCompile Include="Engine\OceanCG.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="OceanFFT.cpp">
+    <ClCompile Include="Engine\OceanFFT.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="OpenGL.cpp">
+    <ClCompile Include="Engine\OpenGL.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
+    <ClCompile Include="Engine\Shader.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Shadow.cpp">
+    <ClCompile Include="Engine\Shadow.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Spectrum.cpp">
+    <ClCompile Include="Engine\Spectrum.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
+    <ClCompile Include="Engine\Texture.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
+    <ClCompile Include="Engine\Transform.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="WindowWin.cpp">
+    <ClCompile Include="Engine\WindowWin.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AdvancedMaterial.hpp">
+    <ClInclude Include="Engine\AdvancedMaterial.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="App.hpp">
+    <ClInclude Include="Engine\App.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.hpp">
+    <ClInclude Include="Engine\Camera.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="CloudsCG.hpp">
+    <ClInclude Include="Engine\CloudsCG.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="CloudSystem.hpp">
+    <ClInclude Include="Engine\CloudSystem.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Integrator.hpp">
+    <ClInclude Include="Engine\Integrator.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Light.hpp">
+    <ClInclude Include="Engine\Light.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Material.hpp">
+    <ClInclude Include="Engine\Material.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.hpp">
+    <ClInclude Include="Engine\Mesh.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Ocean.hpp">
+    <ClInclude Include="Engine\Ocean.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="OceanCG.hpp">
+    <ClInclude Include="Engine\OceanCG.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="OceanFFT.hpp">
+    <ClInclude Include="Engine\OceanFFT.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="OpenGL.hpp">
+    <ClInclude Include="Engine\OpenGL.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.hpp">
+    <ClInclude Include="Engine\Shader.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Shadow.hpp">
+    <ClInclude Include="Engine\Shadow.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Spectrum.h">
+    <ClInclude Include="Engine\Spectrum.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Spectrum.hpp">
+    <ClInclude Include="Engine\Spectrum.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.hpp">
+    <ClInclude Include="Engine\Texture.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.hpp">
+    <ClInclude Include="Engine\Transform.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.hpp">
+    <ClInclude Include="Engine\Vertex.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="WindowWin.hpp">
+    <ClInclude Include="Engine\WindowWin.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
@@ -133,6 +133,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md" />
+    <None Include="README.md">
+      <Filter>Engine</Filter>
+    </None>
   </ItemGroup>
 </Project>
