@@ -2,7 +2,7 @@ CubeOpenGL Engine
 
 ![alt text](https://github.com/quimmedes/Advanced-OpenGL-Engine/blob/master/output/output1.png?raw=true)
 
-![alt text](https://github.com/quimmedes/Advanced-OpenGL-Engine/blob/master/output/output1.png?raw=true)
+![alt text](https://github.com/quimmedes/Advanced-OpenGL-Engine/blob/master/output/output2.png?raw=true)
 
 
 Overview
