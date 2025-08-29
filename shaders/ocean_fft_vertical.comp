@@ -1,0 +1,111 @@
+#version 430
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+// Input and output textures
+layout(binding = 0, rgba32f) uniform image2D inputTexture;
+layout(binding = 1, rgba32f) uniform image2D outputTexture;
+
+// FFT parameters
+uniform int N;          // Grid resolution (must be power of 2)
+uniform int stage;      // Current FFT stage
+uniform bool inverse;   // True for inverse FFT
+
+const float PI = 3.14159265359;
+
+// Complex number operations
+vec2 complexMul(vec2 a, vec2 b) {
+    return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);
+}
+
+vec2 complexAdd(vec2 a, vec2 b) {
+    return a + b;
+}
+
+vec2 complexSub(vec2 a, vec2 b) {
+    return a - b;
+}
+
+// Bit reversal for FFT
+uint bitReverse(uint x, int numBits) {
+    uint result = 0u;
+    for (int i = 0; i < numBits; i++) {
+        result = (result << 1u) | (x & 1u);
+        x >>= 1u;
+    }
+    return result;
+}
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    if (coord.x >= N || coord.y >= N) return;
+    
+    int numStages = int(log2(float(N)));
+    
+    // Vertical FFT pass
+    if (stage == 0) {
+        // Bit-reversal stage
+        int reversedY = int(bitReverse(uint(coord.y), numStages));
+        vec4 value = imageLoad(inputTexture, ivec2(coord.x, reversedY));
+        imageStore(outputTexture, coord, value);
+    } else {
+        // Butterfly operation stage
+        int butterflySpan = 1 << (stage - 1);
+        int butterflyWing = coord.y % (butterflySpan * 2);
+        
+        vec4 data;
+        
+        if (butterflyWing < butterflySpan) {
+            // Upper wing of butterfly
+            int partner = coord.y + butterflySpan;
+            vec4 valueA = imageLoad(inputTexture, coord);
+            vec4 valueB = imageLoad(inputTexture, ivec2(coord.x, partner));
+            
+            // Twiddle factor
+            float angle = -2.0 * PI * float(butterflyWing) / float(butterflySpan * 2);
+            if (inverse) angle = -angle;
+            vec2 twiddle = vec2(cos(angle), sin(angle));
+            
+            // Complex multiplication and addition for height (RG channels)
+            vec2 heightA = valueA.xy;
+            vec2 heightB = complexMul(valueB.xy, twiddle);
+            vec2 heightResult = complexAdd(heightA, heightB);
+            
+            // Complex multiplication and addition for displacement (BA channels)
+            vec2 displaceA = valueA.zw;
+            vec2 displaceB = complexMul(valueB.zw, twiddle);
+            vec2 displaceResult = complexAdd(displaceA, displaceB);
+            
+            data = vec4(heightResult, displaceResult);
+        } else {
+            // Lower wing of butterfly
+            int partner = coord.y - butterflySpan;
+            vec4 valueA = imageLoad(inputTexture, ivec2(coord.x, partner));
+            vec4 valueB = imageLoad(inputTexture, coord);
+            
+            // Twiddle factor
+            float angle = -2.0 * PI * float(butterflyWing - butterflySpan) / float(butterflySpan * 2);
+            if (inverse) angle = -angle;
+            vec2 twiddle = vec2(cos(angle), sin(angle));
+            
+            // Complex multiplication and subtraction for height
+            vec2 heightA = valueA.xy;
+            vec2 heightB = complexMul(valueB.xy, twiddle);
+            vec2 heightResult = complexSub(heightA, heightB);
+            
+            // Complex multiplication and subtraction for displacement
+            vec2 displaceA = valueA.zw;
+            vec2 displaceB = complexMul(valueB.zw, twiddle);
+            vec2 displaceResult = complexSub(displaceA, displaceB);
+            
+            data = vec4(heightResult, displaceResult);
+        }
+        
+        // Normalization for inverse FFT
+        if (inverse && stage == numStages) {
+            data /= float(N * N);
+        }
+        
+        imageStore(outputTexture, coord, data);
+    }
+}

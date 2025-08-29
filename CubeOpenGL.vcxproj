@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D1A9A1B2-1234-4B56-ABCD-1234567890AB}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>CubeOpenGL</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>OpenGL Engine</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+    <VcpkgEnableManifest>false</VcpkgEnableManifest>
+    <VcpkgManifestInstall>false</VcpkgManifestInstall>
+    <VcpkgAutoLink>false</VcpkgAutoLink>
+    <VcpkgApplocalDeps>false</VcpkgApplocalDeps>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgUseMD>false</VcpkgUseMD>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ItemGroup>
+    <ClCompile Include="AdvancedMaterial.cpp" />
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CloudSystem.cpp" />
+    <ClCompile Include="CloudsCG.cpp" />
+    <ClCompile Include="Integrator.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Ocean.cpp" />
+    <ClCompile Include="OceanCG.cpp" />
+    <ClCompile Include="OceanFFT.cpp" />
+    <ClCompile Include="OpenGL.cpp" />
+    <ClCompile Include="Shadow.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Spectrum.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="WindowWin.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AdvancedMaterial.hpp" />
+    <ClInclude Include="App.hpp" />
+    <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="CloudSystem.hpp" />
+    <ClInclude Include="CloudsCG.hpp" />
+    <ClInclude Include="Integrator.hpp" />
+    <ClInclude Include="Light.hpp" />
+    <ClInclude Include="Material.hpp" />
+    <ClInclude Include="Mesh.hpp" />
+    <ClInclude Include="Ocean.hpp" />
+    <ClInclude Include="OceanCG.hpp" />
+    <ClInclude Include="OceanFFT.hpp" />
+    <ClInclude Include="OpenGL.hpp" />
+    <ClInclude Include="Shadow.hpp" />
+    <ClInclude Include="Shader.hpp" />
+    <ClInclude Include="Spectrum.h" />
+    <ClInclude Include="Spectrum.hpp" />
+    <ClInclude Include="Texture.hpp" />
+    <ClInclude Include="Transform.hpp" />
+    <ClInclude Include="Vertex.hpp" />
+    <ClInclude Include="WindowWin.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;UNICODE;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\vcpkg\installed\x64-windows\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;assimp-vc143-mt.lib;user32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\vcpkg\installed\x64-windows\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</AdditionalLibraryDirectories>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>NDEBUG;UNICODE;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\vcpkg\installed\x64-windows\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;assimp-vc143-mt.lib;user32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\vcpkg\installed\x64-windows\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

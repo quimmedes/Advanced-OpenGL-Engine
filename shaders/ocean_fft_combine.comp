@@ -1,0 +1,101 @@
+#version 430
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+// Input FFT result texture
+layout(binding = 0, rgba32f) uniform image2D fftTexture;
+
+// Output textures
+layout(binding = 1, rg32f) uniform image2D heightTexture;
+layout(binding = 2, rgba32f) uniform image2D displacementTexture;
+layout(binding = 3, rgba32f) uniform image2D normalTexture;
+layout(binding = 4, r32f) uniform image2D foamTexture;
+
+// Parameters
+uniform int N;
+uniform float oceanSize;
+uniform float choppiness;
+uniform bool enableChoppiness;
+uniform bool enableFoam;
+uniform float foamThreshold;
+
+const float PI = 3.14159265359;
+
+// Calculate gradient using finite differences
+vec2 calculateGradient(ivec2 coord, float centerHeight) {
+    float leftHeight = imageLoad(fftTexture, ivec2((coord.x - 1 + N) % N, coord.y)).x;
+    float rightHeight = imageLoad(fftTexture, ivec2((coord.x + 1) % N, coord.y)).x;
+    float bottomHeight = imageLoad(fftTexture, ivec2(coord.x, (coord.y - 1 + N) % N)).x;
+    float topHeight = imageLoad(fftTexture, ivec2(coord.x, (coord.y + 1) % N)).x;
+    
+    float dx = (rightHeight - leftHeight) * N / oceanSize;
+    float dy = (topHeight - bottomHeight) * N / oceanSize;
+    
+    return vec2(dx, dy);
+}
+
+// Calculate foam based on wave steepness and displacement divergence
+float calculateFoam(ivec2 coord) {
+    if (!enableFoam) return 0.0;
+    
+    // Get displacement values
+    vec4 fftValue = imageLoad(fftTexture, coord);
+    float height = fftValue.x;
+    vec2 displacement = fftValue.zw;
+    
+    // Calculate displacement divergence (Jacobian)
+    vec2 displaceLeft = imageLoad(fftTexture, ivec2((coord.x - 1 + N) % N, coord.y)).zw;
+    vec2 displaceRight = imageLoad(fftTexture, ivec2((coord.x + 1) % N, coord.y)).zw;
+    vec2 displaceBottom = imageLoad(fftTexture, ivec2(coord.x, (coord.y - 1 + N) % N)).zw;
+    vec2 displaceTop = imageLoad(fftTexture, ivec2(coord.x, (coord.y + 1) % N)).zw;
+    
+    // Jacobian matrix elements
+    float dDx_dx = (displaceRight.x - displaceLeft.x) * N / oceanSize;
+    float dDz_dy = (displaceTop.y - displaceBottom.y) * N / oceanSize;
+    
+    // Jacobian determinant (measure of area compression/expansion)
+    float jacobian = (1.0 + dDx_dx) * (1.0 + dDz_dy);
+    
+    // Foam appears where waves fold over (negative jacobian)
+    float foam = clamp(-jacobian, 0.0, 1.0);
+    
+    // Apply threshold
+    foam = smoothstep(foamThreshold - 0.1, foamThreshold + 0.1, foam);
+    
+    return foam;
+}
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    if (coord.x >= N || coord.y >= N) return;
+    
+    // Get FFT result (real parts only, imaginary should be ~0 after IFFT)
+    vec4 fftResult = imageLoad(fftTexture, coord);
+    
+    // Extract height and displacement
+    float height = fftResult.x;  // Real part of height spectrum
+    vec2 displacement = fftResult.zw * choppiness;  // Real parts of displacement spectrum
+    
+    // Calculate gradient for normal mapping
+    vec2 gradient = calculateGradient(coord, height);
+    
+    // Calculate normal from gradient
+    vec3 normal = normalize(vec3(-gradient.x, 1.0, -gradient.y));
+    
+    // Calculate foam
+    float foam = calculateFoam(coord);
+    
+    // Store results
+    imageStore(heightTexture, coord, vec4(height, 0.0, 0.0, 1.0));
+    
+    if (enableChoppiness) {
+        imageStore(displacementTexture, coord, vec4(displacement.x, 0.0, displacement.y, 1.0));
+    } else {
+        imageStore(displacementTexture, coord, vec4(0.0, 0.0, 0.0, 1.0));
+    }
+    
+    // Store normal (convert from [-1,1] to [0,1] range for texture storage)
+    imageStore(normalTexture, coord, vec4(normal * 0.5 + 0.5, 1.0));
+    
+    imageStore(foamTexture, coord, vec4(foam, 0.0, 0.0, 1.0));
+}

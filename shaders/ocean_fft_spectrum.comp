@@ -1,0 +1,105 @@
+#version 430
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+// Output spectrum texture
+layout(binding = 0, rgba32f) uniform image2D spectrumTexture;
+
+// Wave parameters
+uniform float time;
+uniform float A;                    // Wave amplitude scaling
+uniform vec2 windSpeed;            // Wind speed in m/s
+uniform vec2 windDirection;        // Wind direction (normalized)
+uniform float lambda;              // Choppiness parameter
+uniform float L;                   // Length scale for largest waves
+uniform float damping;             // Wave damping factor
+uniform float gravity;             // Gravitational constant
+uniform float oceanSize;           // Physical ocean size
+uniform int N;                     // Grid resolution
+
+const float PI = 3.14159265359;
+
+// Generate Gaussian random number using Box-Muller transform
+vec2 generateGaussianRandom(vec2 uv) {
+    vec2 u = fract(sin(dot(uv, vec2(12.9898, 78.233))) * vec2(43758.5453, 28001.8384));
+    
+    float r = sqrt(-2.0 * log(u.x));
+    float theta = 2.0 * PI * u.y;
+    
+    return vec2(r * cos(theta), r * sin(theta));
+}
+
+// Phillips spectrum calculation
+float phillipsSpectrum(vec2 k) {
+    float kLength = length(k);
+    if (kLength < 0.000001) return 0.0;
+    
+    float kLength2 = kLength * kLength;
+    float kLength4 = kLength2 * kLength2;
+    
+    // Wind influence
+    vec2 kNormalized = k / kLength;
+    vec2 windNormalized = normalize(windDirection);
+    float kDotWind = dot(kNormalized, windNormalized);
+    float kDotWind2 = kDotWind * kDotWind;
+    
+    // Phillips spectrum formula
+    float windLength = length(windSpeed);
+    float Lwind = (windLength * windLength) / gravity;
+    float dampingFactor = exp(-kLength2 * damping * damping);
+    
+    return A * exp(-1.0 / (kLength2 * Lwind * Lwind)) / kLength4 * kDotWind2 * dampingFactor;
+}
+
+// Dispersion relation
+float dispersionRelation(vec2 k) {
+    return sqrt(gravity * length(k));
+}
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    if (coord.x >= N || coord.y >= N) return;
+    
+    // Calculate wave vector k
+    vec2 k = vec2(
+        (2.0 * PI * (coord.x - N / 2)) / oceanSize,
+        (2.0 * PI * (coord.y - N / 2)) / oceanSize
+    );
+    
+    // Generate initial spectrum h0(k) and h0(-k)*
+    vec2 gaussianRand1 = generateGaussianRandom(vec2(coord) / float(N));
+    vec2 gaussianRand2 = generateGaussianRandom(vec2(N - coord.x, N - coord.y) / float(N));
+    
+    float phillips = phillipsSpectrum(k);
+    float phillipsConj = phillipsSpectrum(-k);
+    
+    // h0(k)
+    vec2 h0k = gaussianRand1 * sqrt(phillips * 0.5);
+    
+    // h0(-k)*
+    vec2 h0minusk = vec2(gaussianRand2.x, -gaussianRand2.y) * sqrt(phillipsConj * 0.5);
+    
+    // Time-dependent spectrum: h(k,t) = h0(k) * exp(i*w*t) + h0(-k)* * exp(-i*w*t)
+    float omega = dispersionRelation(k);
+    float omegaT = omega * time;
+    
+    // Complex exponentials
+    vec2 expPos = vec2(cos(omegaT), sin(omegaT));
+    vec2 expNeg = vec2(cos(omegaT), -sin(omegaT));
+    
+    // Complex multiplication: h0k * expPos + h0minusk * expNeg
+    vec2 htk;
+    htk.x = h0k.x * expPos.x - h0k.y * expPos.y + h0minusk.x * expNeg.x - h0minusk.y * expNeg.y;
+    htk.y = h0k.x * expPos.y + h0k.y * expPos.x + h0minusk.x * expNeg.y + h0minusk.y * expNeg.x;
+    
+    // Calculate displacement spectrum for choppiness
+    vec2 displaceX = vec2(0.0), displaceZ = vec2(0.0);
+    if (length(k) > 0.000001) {
+        float kLength = length(k);
+        displaceX = vec2(-htk.y * k.x / kLength, htk.x * k.x / kLength) * lambda;
+        displaceZ = vec2(-htk.y * k.y / kLength, htk.x * k.y / kLength) * lambda;
+    }
+    
+    // Store spectrum: R=height real, G=height imag, B=displaceX real, A=displaceX imag
+    imageStore(spectrumTexture, coord, vec4(htk.x, htk.y, displaceX.x, displaceX.y));
+}
